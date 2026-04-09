@@ -1,7 +1,8 @@
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.messages import HumanMessage,AIMessage,SystemMessage
-from langchain_core.output_parsers import StrOutputParser # stroutputparser is function 
+from langchain_core.output_parsers import StrOutputParser # stroutputparser()  
 from langchain_groq import ChatGroq
+from langchain_core.runnables import RunnableLambda,RunnableSequence
 from dotenv import load_dotenv
 load_dotenv()
 model = ChatGroq(model="openai/gpt-oss-120b")
@@ -9,19 +10,27 @@ model = ChatGroq(model="openai/gpt-oss-120b")
 
 prompttemplate = ChatPromptTemplate.from_messages(
     [("system","You are a comedian who tells a joke on {topic}"),
-    ("human","tell me {joke_count} joke. ")])
+    ("human","tell me {joke_count} joke. ")]
+)
 
-#("system","You are a comedian who tells a joke on {topic}") internally it becomes the
+#under the hood is happening 
+#chain = prompttemplate | model | StrOutputParser()
 
-# | Tuple part | Meaning       |
-# | ---------- | ------------- |
-# | `"system"` | SystemMessage |
-# | `"human"`  | HumanMessage  |
-# | `"ai"`     | AIMessage     |
-# | `"tool"`   | ToolMessage   |
+format_prompt = RunnableLambda(
+    lambda x:prompttemplate.invoke(x)
+)
 
-#chain 
-chain = prompttemplate | model | StrOutputParser()
+llm = RunnableLambda(
+    lambda x:model.invoke(x)
+)
+
+get_text = RunnableLambda(
+    lambda x:x.content
+)
+
+# if we want to change the sequence of the chain we use the runnablesequence()
+chain = RunnableSequence(first=format_prompt,middle=[llm],last=get_text)
+ 
 result = chain.invoke({"topic":'water','joke_count':2})
 
 print(result)
