@@ -30,7 +30,7 @@ print(f"Sample chunk:\n{docs[0].page_content}\n")
 embedding = HuggingFaceEmbeddings(
     model_name="sentence-transformers/all-MiniLM-L6-v2"
 )
-print("-------------finished creating embeddings--------------\n");
+print("--------finished creating embeddings------------\n");
 
 """Creating a Vector store for better retrival of embeddings """
 print("Creating Vector store");
@@ -39,4 +39,6 @@ db = Chroma.from_documents(
     embedding=embedding,
     persist_directory=persistent_directory
 )
+
+
 print("Vector store created");
