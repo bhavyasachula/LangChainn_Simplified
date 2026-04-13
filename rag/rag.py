@@ -1,0 +1,43 @@
+from langchain_community.document_loaders.pdf import PyPDFDirectoryLoader,PyPDFLoader
+# from langchain_community.document_loaders import Textloader
+from langchain_community.vectorstores import Chroma
+
+from langchain_text_splitters import CharacterTextSplitter
+from langchain_groq import ChatGroq
+from langchain_community.embeddings  import HuggingFaceEmbeddings
+import os
+
+
+
+curent_directory = os.path.dirname(os.path.abspath(__file__))
+
+file_path = os.path.join(curent_directory,"data","Bank_details.pdf");
+persistent_directory = os.path.join(curent_directory,"db","chroma_db");
+
+"""pypdfloader loads pdf in docloader and usnig load() method we are storing into the documents variable"""
+docloader = PyPDFLoader(file_path);
+documents = docloader.load();
+
+"""Text splitter makes the chunks of the document as mentioned in chunksize"""
+textSpiltter = CharacterTextSplitter(chunk_size=1000,chunk_overlap=0)
+docs = textSpiltter.split_documents(documents)
+print("\n documents chunks info----");
+print(f"Number of documents chunks:{len(docs)}")
+print(f"Sample chunk:\n{docs[0].page_content}\n")
+
+
+""" LLM Embedder convert text into embeddings"""
+embedding = HuggingFaceEmbeddings(
+    model_name="sentence-transformers/all-MiniLM-L6-v2"
+)
+print("finished creating embeddings");
+
+print("Creating Vector store");
+db = Chroma.from_documents(
+    docs,
+    embedding=embedding,
+    persist_directory=persistent_directory
+)
+
+
+print("Vector store created");
