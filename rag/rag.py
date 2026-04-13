@@ -8,6 +8,12 @@ from langchain_community.embeddings  import HuggingFaceEmbeddings
 import os
 
 
+# doc = load_doc()
+# for i, page in enumerate(doc):
+#     print(page.page_content)
+
+#     if i == len(doc) - 1:
+#         print("\nReached end of document")
 
 curent_directory = os.path.dirname(os.path.abspath(__file__))
 
