@@ -25,8 +25,12 @@ docloader = PyPDFLoader(file_path);
 documents = docloader.load();
 
 """Text splitter makes the chunks of the document as mentioned in chunksize"""
-textSpiltter = CharacterTextSplitter(chunk_size=1000,chunk_overlap=0)
+textSpiltter = CharacterTextSplitter(chunk_size=1000,chunk_overlap=0) 
+#charactertextsplitter tells the split_document how many chunks size and overlap  
+# specify the chunkspillting using characterTextsplitter size and overlap
+# docs=CharacterTextSplitter(chunk_size=1000,chunk_overlap=0).split_documents(documents)
 docs = textSpiltter.split_documents(documents)
+
 print("\n documents chunks info----");
 print(f"Number of documents chunks:{len(docs)}\n")
 print(f"Sample chunk:\n{docs[0].page_content}\n")
