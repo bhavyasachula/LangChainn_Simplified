@@ -22,7 +22,7 @@ retriever =  db.as_retriever(
 #k=is how many documents u need to retrieve in this case 4
 # score_threshold means how relevant or similiar the documents we need from the vector store    
     
-
+""" rag : relevant document retrieval"""
 relevant_docs = retriever.invoke(query);
 for index,docs in enumerate(relevant_docs):
     print(f"document {index+1}:\n{docs.page_content}\n");
