@@ -14,9 +14,9 @@ import os
 
 #     if i == len(doc) - 1:
 #         print("\nReached end of document")
-
+print(os.path.abspath(__file__));"""path to the rag.py"""
+print(os.path.dirname(os.path.abspath(__file__)));"""path to parent folder/directory rag folder"""
 curent_directory = os.path.dirname(os.path.abspath(__file__))
-
 file_path = os.path.join(curent_directory,"data","Bank_details.pdf");
 persistent_directory = os.path.join(curent_directory,"db","chroma_db");
 
@@ -26,12 +26,14 @@ documents = docloader.load();
 
 """Text splitter makes the chunks of the document as mentioned in chunksize"""
 Spiltter = CharacterTextSplitter(chunk_size=1000,chunk_overlap=0) 
-#charactertextsplitter tells the split_document how many chunks size and overlap  
-# specify the chunkspillting using characterTextsplitter size and overlap
-# docs=CharacterTextSplitter(chunk_size=1000,chunk_overlap=0).split_documents(documents)
+#commentss
+"""charactertextsplitter tells the split_document how many chunks size and overlap  
+ specify the chunkspillting using characterTextsplitter size and overlap
+ docs=CharacterTextSplitter(chunk_size=1000,chunk_overlap=0).split_documents(documents)"""
 
 """Main work is done by the split_documennts() and textSplitter will tell the split_documents to actually perform the action of splitting """
 """textSplitter defines the spliting and split_documents actually splits the data."""
+
 docs = Spiltter.split_documents(documents)
 
 print("\n documents chunks info----");
@@ -47,6 +49,21 @@ print("--------finished creating embeddings------------\n");
 
 """Creating a Vector store for better retrival of embeddings """
 print("Creating Vector store");
+"""Chroma.from_documents used when u haven't loaded the data and u are creating the store first after the creation we use Chroma() function
+db = Chroma(
+    persist_directory=...,
+    embedding_function=...
+)
+Data is already stored
+You want to search/query """
+
+"""
+| Function           | Purpose           |
+| ------------------ | ----------------- |
+| `from_documents()` | create + store DB |
+| `Chroma(...)`      | load + use DB     |
+
+"""
 db = Chroma.from_documents(
     docs,
     embedding=embedding,
