@@ -63,7 +63,7 @@ rag_chain = create_retrieval_chain(history_aware_retriever, question_answer_chai
 
 def chat():
 
-    print("dadasd")
+    print("Start Chatting with Ai If break use 'exit' keyword");
 chat_history = []
 while True:
     query = input("You: ")
