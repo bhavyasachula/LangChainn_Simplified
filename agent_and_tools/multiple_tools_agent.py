@@ -64,9 +64,9 @@ while True:
     memory.chat_memory.add_message(HumanMessage(content=user_input));
 
     response = agent_executor.invoke({"input":user_input});
-    print("Ai :"+ response["output"]);
+    print("Ai :",response["output"]);
     memory.chat_memory.add_message(AIMessage(content=response["output"]));
-    break
+    
 
   
     
