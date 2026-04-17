@@ -2,6 +2,7 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.messages import HumanMessage,AIMessage,SystemMessage
 from langchain_groq import ChatGroq
 from dotenv import load_dotenv
+import os
 load_dotenv()
 model = ChatGroq(model="openai/gpt-oss-120b")
 
@@ -27,3 +28,5 @@ response = prompt_multiple.invoke({"adjective":"funny","animal":"panda"})
 print(response) 
 msg = HumanMessage(content=response.to_string())
 print(msg.content)
+current_dir = os.path.dirname(os.path.abspath(__file__))
+print(current_dir)
