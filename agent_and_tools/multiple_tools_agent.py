@@ -39,7 +39,7 @@ tools = [
 agent = create_structured_chat_agent(
     llm=llm,
     tools=tools,
-    prompt=prompt,
+    prompt=prompt
 )
 
 memory = ConversationBufferMemory(
@@ -64,7 +64,7 @@ while True:
         break;
     
     response = agent_executor.invoke({"input":user_input});
-    print("Ai :",response["output"]);
+    print("Ai :",response.get("output"));
    
     
 
