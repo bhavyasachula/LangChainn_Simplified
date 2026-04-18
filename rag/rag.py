@@ -14,13 +14,14 @@ import os
 
 #     if i == len(doc) - 1:
 #         print("\nReached end of document")
-print(os.path.abspath(__file__));"""path to the rag.py"""
-print(os.path.dirname(os.path.abspath(__file__)));"""path to parent folder/directory rag folder"""
-curent_directory = os.path.dirname(os.path.abspath(__file__))
-file_path = os.path.join(curent_directory,"data","Bank_details.pdf");
+
+#print(os.path.abspath(__file__));"""path to the rag.py"""
+#print(os.path.dirname(os.path.abspath(__file__)));"""path to parent folder/directory rag folder"""
+curent_directory = os.path.dirname(os.path.abspath(__file__));
 persistent_directory = os.path.join(curent_directory,"db","chroma_db");
 
 """pypdfloader loads pdf in docloader and usnig load() method we are storing into the documents variable"""
+file_path = os.path.join(curent_directory,"data","Bank_details.pdf");
 docloader = PyPDFLoader(file_path);
 documents = docloader.load();
 
