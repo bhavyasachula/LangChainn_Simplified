@@ -15,12 +15,20 @@ prompt2 = PromptTemplate(
     input_variables=['text']
 )
 
-model = ChatGroq(model="openai/gpt-oss-120b")
+model = ChatGroq(model="openai/gpt-oss-120b",
+                 temperature=0.7)
 
 parser = StrOutputParser()
 
 chain = prompt1 | model | parser | prompt2 | model | parser
-
-result = chain.invoke({'topic': 'norse mythology'})
+config = {
+    "tags":["llm app","report generation","summarization"],
+    "metadata":{
+    "author":"baapokabaapbhavya",
+     "model1":"openai/gpt-oss-120b",
+     "temperature":0.7
+     }
+}
+result = chain.invoke({'topic': 'norse mythology'}, config=config)
 
 print(result)
