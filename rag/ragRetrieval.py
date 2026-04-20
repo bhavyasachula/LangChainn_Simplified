@@ -27,14 +27,15 @@ query="how many PATEL MANGALDAS SOMA?";
 """
 retriever =  db.as_retriever(  # returns an retriver object 
     search_type="similarity_score_threshold",
-    search_kwargs={"k":2,"score_threshold":0.2}
+    search_kwargs={"k":4,"score_threshold":0.2}
 )
+
 config={
     "run_name":"RAG Retrieval",
     "tags":["retrieval","vector store","chroma db"],
     "metadata":{"author":"baapokabaapbhavya",
             "model":"sentence-transformers/all-MiniLM-L6-v2",
-            "k":2,"score_threshold":0.2
+            "k":4,"score_threshold":0.2
             }
 }
 #k=is how many documents u need to retrieve in this case 2
