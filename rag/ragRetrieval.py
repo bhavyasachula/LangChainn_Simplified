@@ -3,7 +3,7 @@ from langchain_groq import ChatGroq
 from langchain_community.embeddings  import HuggingFaceEmbeddings
 import os
 
-
+os.environ['LANSMITH_PROJECT']="RAG Retrieval"
 curent_directory = os.path.dirname(os.path.abspath(__file__))
 persistent_directory = os.path.join(curent_directory,"db","chroma_db");
 
@@ -23,13 +23,21 @@ query="how many PATEL MANGALDAS SOMA?";
 """
 retriever =  db.as_retriever(  # returns an retriver object 
     search_type="similarity_score_threshold",
-    search_kwargs={"k":4,"score_threshold":0.2}
+    search_kwargs={"k":2,"score_threshold":0.2}
 )
-#k=is how many documents u need to retrieve in this case 4
+config={
+    "run_name":"RAG Retrieval",
+    "tags":["retrieval","vector store","chroma db"],
+    "metadata":{"author":"baapokabaapbhavya",
+            "model":"sentence-transformers/all-MiniLM-L6-v2",
+            "k":2,"score_threshold":0.2
+            }
+}
+#k=is how many documents u need to retrieve in this case 2
 # score_threshold means how relevant or similiar the documents we need from the vector store    
     
 """ rag : relevant document retrieval"""
-relevant_docs = retriever.invoke(query);
+relevant_docs = retriever.invoke(query,config=config);
 # retriever.invoke() retriver will get ur query and searches in replace of like db.similarity_search()
 for index,docs in enumerate(relevant_docs):
     print(f"document {index+1}:\n{docs.page_content}\n");

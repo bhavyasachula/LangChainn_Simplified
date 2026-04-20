@@ -23,11 +23,11 @@ persistent_directory = os.path.join(curent_directory,"db","chroma_db");
 """pypdfloader loads pdf in docloader and usnig load() method we are storing into the documents variable"""
 file_path = os.path.join(curent_directory,"data","Bank_details.pdf");
 
-docloader = PyPDFLoader(file_path);
-documents = docloader.load();
+loader = PyPDFLoader(file_path);
+docs = loader.load();
 
 """Text splitter makes the chunks of the document as mentioned in chunksize"""
-Spiltter = CharacterTextSplitter(chunk_size=1000,chunk_overlap=0) 
+Splitter = CharacterTextSplitter(chunk_size=1000,chunk_overlap=0) 
 #------------------------------------------------------------------------------
 """charactertextsplitter tells the split_document how many chunks size and overlap  
  specify the chunkspillting using characterTextsplitter size and overlap
@@ -36,7 +36,7 @@ Spiltter = CharacterTextSplitter(chunk_size=1000,chunk_overlap=0)
 """Main work is done by the split_documennts() and textSplitter will tell the split_documents to actually perform the action of splitting """
 """textSplitter defines the spliting and split_documents actually splits the data."""
 
-docs = Spiltter.split_documents(documents)
+docs = Splitter.split_documents(docs)
 
 print("\n documents chunks info----");
 print(f"Number of documents chunks:{len(docs)}\n")
