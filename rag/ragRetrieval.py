@@ -1,9 +1,13 @@
 from langchain_community.vectorstores import Chroma
 from langchain_groq import ChatGroq
-from langchain_community.embeddings  import HuggingFaceEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
+from dotenv import load_dotenv
 import os
 
+load_dotenv()
+
 os.environ['LANSMITH_PROJECT']="RAG Retrieval"
+
 curent_directory = os.path.dirname(os.path.abspath(__file__))
 persistent_directory = os.path.join(curent_directory,"db","chroma_db");
 
