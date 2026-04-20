@@ -4,7 +4,7 @@ from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 import os
 load_dotenv()
-os.environ["LANGSMITH_API_KEY"] = "SequencialChain"
+os.environ["LANGSMITH_PROJECT"] = "SequencialChain"
 prompt1 = PromptTemplate(
     template='Generate a detailed report on {topic}',
     input_variables=['topic']
@@ -22,6 +22,7 @@ parser = StrOutputParser()
 
 chain = prompt1 | model | parser | prompt2 | model | parser
 config = {
+    "run_name":"SequencialChain",
     "tags":["llm app","report generation","summarization"],
     "metadata":{
     "author":"baapokabaapbhavya",
