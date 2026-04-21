@@ -103,4 +103,4 @@ config={
 
 response = chain.invoke(QUERY,config=config)
 
-print("question"+ QUERY +" \n "+" answer "+ response);
+print("question" + QUERY + " \n " + " answer " + response);
