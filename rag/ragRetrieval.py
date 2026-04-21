@@ -6,7 +6,7 @@ import os
 
 load_dotenv()
 
-os.environ['LANSMITH_PROJECT']="RAG Retrieval"
+os.environ['LANGCHAIN_PROJECT']="RAG Retrieval"
 
 curent_directory = os.path.dirname(os.path.abspath(__file__))
 persistent_directory = os.path.join(curent_directory,"db","chroma_db");

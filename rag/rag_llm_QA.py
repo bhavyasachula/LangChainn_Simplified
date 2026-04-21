@@ -5,12 +5,15 @@ from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_community.vectorstores import Chroma
 from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_groq import ChatGroq
+from langchain_core.runnables import RunnableLambda
 from langsmith import traceable
+from langchain_core.runnables import RunnableLambda, RunnableParallel, RunnablePassthrough
+from langchain_core.output_parsers import StrOutputParser
 
 # ── Environment ───────────────────────────────────────────────────────────────
 
 load_dotenv()
-os.environ["LANGSMITH_PROJECT"] = "RAG-LLM-QA"
+os.environ["LANGCHAIN_PROJECT"] = "RAG-Hierarchical-QA-Test"
 
 # ── Paths ─────────────────────────────────────────────────────────────────────
 
@@ -62,31 +65,42 @@ def setup_retriever(embedding, persist_dir: str, query: str) -> list:
     show_docs(relevant_docs)
     return relevant_docs
 
-
-@traceable(name="build_prompt")
-def build_prompt(query: str, relevant_docs: list) -> str:
     """Combine query + retrieved context into a prompt."""
-    context = "\n".join(doc.page_content for doc in relevant_docs)
-    return (
-        f"Here are some documents:\n"
-        f"{query}\n\n"
-        f"Relevant Documents:\n{context}\n\n"
-        f"Answer only from above."
-    )
-
-
 # ── Main ──────────────────────────────────────────────────────────────────────
+relevant_docs_chain = RunnableLambda(lambda QUERY:setup_retriever(embedding,PERSIST_DIR,QUERY))
 
 relevant_docs = setup_retriever(embedding, PERSIST_DIR, QUERY)
 
-messages = [
-    SystemMessage("You are a helpful assistant"),
-    HumanMessage(build_prompt(QUERY, relevant_docs)),
-]
+def format_docs(relevant_docs):
+    return "\n".join(doc.page_content for doc in relevant_docs)
 
-response = llm.invoke(messages)
+# context = format_docs()
 
-print("Full LLM result:")
+# combined_prompt = f"""Here are some documents:\n
+#         {QUERY}\n\n
+#         Relevant Documents:\n{context}\n\n
+#         "Answer only from above."""
+
+# messages = [
+#     SystemMessage("You are a helpful assistant"),
+#     HumanMessage(content=combined_prompt),
+# ]
+
+parallel = RunnableParallel({
+    "context":relevant_docs_chain | RunnableLambda(format_docs),
+    "question":RunnablePassthrough()
+})
+
+chain = parallel | RunnableLambda(lambda x:f"""Here are some documents:\n
+        {x['question']}\n\n
+        Relevant Documents:\n{x['context']}\n\n
+        "Answer only from above.""") | llm | StrOutputParser()
+
+
+config={
+    "run_name":"rag_hierarchical_QA_test",
+}
+
+response = chain.invoke(QUERY,config=config)
+
 print(response)
-print("\nContent only:")
-print(response.content)
