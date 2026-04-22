@@ -4,7 +4,7 @@ from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 import os
 load_dotenv()
-os.environ["LANGSMITH_PROJECT"] = "SequencialChain"
+os.environ["LANGCHAIN_PROJECT"] = "SequencialChain"
 prompt1 = PromptTemplate(
     template='Generate a detailed report on {topic}',
     input_variables=['topic']

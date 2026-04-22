@@ -99,6 +99,7 @@ chain = parallel | RunnableLambda(lambda x:f"""Here are some documents:\n
 
 config={
     "run_name":"rag_hierarchical_QA_test",
+    "tags":["RAG","Hierarchical_QA"],
 }
 
 response = chain.invoke(QUERY,config=config)
