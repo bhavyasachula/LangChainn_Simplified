@@ -100,6 +100,11 @@ chain = parallel | RunnableLambda(lambda x:f"""Here are some documents:\n
 config={
     "run_name":"rag_hierarchical_QA_test",
     "tags":["RAG","Hierarchical_QA"],
+    "metadata":{
+        "embedding_model":EMBEDDING_MODEL,
+        "llm_model":LLM_MODEL,
+        "top_k_results":TOP_K_RESULTS
+    }
 }
 
 response = chain.invoke(QUERY,config=config)
